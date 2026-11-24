@@ -420,3 +420,5 @@ input[type="date"], input[type="time"] { color-scheme: dark; }
 .sync-pill.ready { opacity: 0; }
 .sync-pill.saving, .sync-pill.syncing { color: var(--accent); }
 .sync-pill.offline { color: var(--bad); }
+.edit-row .num-note { flex: none; width: 76px; text-align: center; color: var(--muted); }
+.counter .plus + .plus { margin-left: -4px; }

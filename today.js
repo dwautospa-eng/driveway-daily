@@ -6,7 +6,7 @@ import { dayLabel, shortLabel, weekday } from './dates.js';
 import { fmtMin, money } from './util.js';
 import { Bar, GoalList } from './common.js';
 
-const GROUPS = [['outreach', 'Outreach'], ['content', 'Content'], ['followups', 'Follow-ups']];
+const GROUPS = [['outreach', 'Outreach'], ['content', 'Content'], ['team', 'Team']];
 
 export function Today({ state, now }) {
   const date = now.date, day = state.days[date], s = state.settings;
@@ -43,7 +43,7 @@ export function Today({ state, now }) {
     </div>`)}
 
     <${TasksSummary} day=${day} score=${score} sat=${sat} />
-    <${Volume} day=${day} date=${date} settings=${s} />
+    <${Volume} day=${day} date=${date} settings=${s} state=${state} />
 
     ${day.eod
       ? html`<section class="card closed">
@@ -116,7 +116,7 @@ function Intention({ date, day }) {
   </section>`;
 }
 
-function Volume({ day, date, settings }) {
+function Volume({ day, date, settings, state }) {
   const total = L.volumeTotal(day), target = L.volumeTarget(day);
   const bump = (id, n) => update((s) => {
     const c = s.days[date].counts;
@@ -125,16 +125,23 @@ function Volume({ day, date, settings }) {
   return html`<section class="card">
     <div class="card-head"><h2>Volume today</h2><b class="big-num">${total} / ${target}</b></div>
     <${Bar} value=${total} max=${target} />
-    ${GROUPS.map(([g, label]) => html`
+    ${GROUPS.map(([g, label]) => {
+      const list = settings.counters.filter((c) => c.group === g);
+      return list.length > 0 && html`
       <h3>${label}</h3>
-      ${settings.counters.filter((c) => c.group === g).map((c) => {
-        const n = day.counts[c.id] || 0, t = day.targets[c.id] ?? c.target;
-        return html`<div class=${'counter' + (n >= t ? ' hit' : '')}>
-          <div class="counter-label"><span>${c.label}</span><small>${n} / ${t}${n >= t ? ' ✓' : ''}</small></div>
-          <button class="minus" disabled=${n <= 0} onClick=${() => bump(c.id, -1)} aria-label=${'Minus one ' + c.label}>−</button>
+      ${list.map((c) => {
+        const weekly = c.per === 'week';
+        const today = day.counts[c.id] || 0;
+        const n = weekly ? L.weekCount(state, date, c.id) : today;
+        const t = weekly ? c.target : (day.targets[c.id] ?? c.target);
+        const step = c.step || 1;
+        return html`<div class=${'counter' + (t > 0 && n >= t ? ' hit' : '')}>
+          <div class="counter-label"><span>${c.label}</span><small>${n} / ${t}${weekly ? ' this week' : ''}${t > 0 && n >= t ? ' ✓' : ''}</small></div>
+          <button class="minus" disabled=${today <= 0} onClick=${() => bump(c.id, -1)} aria-label=${'Minus one ' + c.label}>−</button>
+          ${step > 1 && html`<button class="plus" onClick=${() => bump(c.id, step)} aria-label=${'Plus ' + step + ' ' + c.label}>+${step}</button>`}
           <button class="plus" onClick=${() => bump(c.id, 1)} aria-label=${'Plus one ' + c.label}>+1</button>
         </div>`;
-      })}
-    `)}
+      })}`;
+    })}
   </section>`;
 }

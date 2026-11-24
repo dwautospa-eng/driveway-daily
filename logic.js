@@ -19,7 +19,7 @@ export const PICKUP_STEPS = [
 // Saturday is lighter: lower volume targets.
 export function targetsFor(settings, date) {
   const sat = isSaturday(date);
-  return Object.fromEntries(settings.counters.map((c) => [c.id, sat ? (c.saturdayTarget ?? Math.ceil(c.target / 3)) : c.target]));
+  return Object.fromEntries(settings.counters.filter((c) => c.per !== 'week').map((c) => [c.id, sat ? (c.saturdayTarget ?? Math.ceil(c.target / 3)) : c.target]));
 }
 
 // ---------- Day records ----------
@@ -233,7 +233,14 @@ export function streak(state, today) {
   return s;
 }
 
-export const volumeTotal = (day) => sum(Object.values(day?.counts || {}));
+// Only counters with a daily target count toward the day's volume (weekly ones and retired ones don't).
+export const volumeTotal = (day) => sum(Object.keys(day?.targets || {}).map((id) => day.counts?.[id] || 0));
+// Weekly counters: Monday through this date.
+export function weekCount(state, date, id) {
+  let n = 0;
+  for (let d = weekStart(date); d <= date; d = addDays(d, 1)) n += state.days[d]?.counts?.[id] || 0;
+  return n;
+}
 export const volumeTarget = (day) => sum(Object.values(day?.targets || {}));
 
 // ---------- Money ----------

@@ -47,8 +47,10 @@ export function Settings({ state, now }) {
         <span class="grow">${c.label}</span>
         <input class="num" type="number" inputmode="numeric" min="0" value=${c.target} aria-label=${c.label + ' weekday target'}
           onChange=${(e) => set((x) => { x.counters[i].target = Math.max(0, +e.target.value || 0); })} />
-        <input class="num" type="number" inputmode="numeric" min="0" value=${c.saturdayTarget} aria-label=${c.label + ' Saturday target'}
-          onChange=${(e) => set((x) => { x.counters[i].saturdayTarget = Math.max(0, +e.target.value || 0); })} />
+        ${c.per === 'week'
+          ? html`<small class="num-note">per week</small>`
+          : html`<input class="num" type="number" inputmode="numeric" min="0" value=${c.saturdayTarget} aria-label=${c.label + ' Saturday target'}
+          onChange=${(e) => set((x) => { x.counters[i].saturdayTarget = Math.max(0, +e.target.value || 0); })} />`}
       </div>`)}
     </section>
 

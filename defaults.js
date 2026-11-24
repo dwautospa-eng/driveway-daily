@@ -1,5 +1,5 @@
 import { addDays, weekday, monthKey, monthEnd, quarterEnd } from './dates.js';
-import { blankDay, newTask, timeframeDates } from './logic.js';
+import { blankDay, newTask, timeframeDates, targetsFor } from './logic.js';
 import { uid } from './util.js';
 
 export function defaultSettings() {
@@ -29,13 +29,13 @@ export function defaultSettings() {
       { id: 'nn_handoff', title: 'Hand off one thing', minutes: 15, note: "Document or delegate one task so you're not the bottleneck." },
     ],
     counters: [
-      { id: 'c_past', group: 'outreach', label: 'Past customers texted', target: 5, saturdayTarget: 2 },
-      { id: 'c_oldleads', group: 'outreach', label: 'Old leads contacted', target: 15, saturdayTarget: 5 },
-      { id: 'c_partners', group: 'outreach', label: 'Partners reached', target: 3, saturdayTarget: 1 },
-      { id: 'c_clips', group: 'content', label: 'Clips shot', target: 10, saturdayTarget: 6 },
-      { id: 'c_hooks', group: 'content', label: 'Hooks written', target: 5, saturdayTarget: 2 },
+      { id: 'c_calls', group: 'outreach', label: 'Leads called', target: 10, saturdayTarget: 4 },
+      { id: 'c_touches', group: 'outreach', label: 'Outreach touches', target: 500, saturdayTarget: 150, step: 10 },
+      { id: 'c_reviews', group: 'outreach', label: 'Reviews', target: 2, saturdayTarget: 1 },
+      { id: 'c_scripted', group: 'content', label: 'Videos scripted', target: 2, saturdayTarget: 1 },
       { id: 'c_posts', group: 'content', label: 'Posts made', target: 2, saturdayTarget: 1 },
-      { id: 'c_followups', group: 'followups', label: 'Follow-ups completed', target: 10, saturdayTarget: 4 },
+      { id: 'c_brand', group: 'content', label: 'Personal brand content', target: 1, saturdayTarget: 0 },
+      { id: 'c_teamreview', group: 'team', label: 'Internal team performance review', per: 'week', target: 3 },
     ],
     reminders: [
       { id: 'rem_partners', text: 'Recruit new referral partners', days: [1, 3, 5], rolling: false },
@@ -64,7 +64,7 @@ export function defaultSettings() {
 }
 
 export function defaultState(today, withSample) {
-  const st = { version: 4, settings: defaultSettings(), goals: defaultGoals(today), wins: [], days: {}, weeks: {}, v3: true, v4: true };
+  const st = { version: 5, settings: defaultSettings(), goals: defaultGoals(today), wins: [], days: {}, weeks: {}, v3: true, v4: true, v5: true };
   if (withSample) seedSample(st, today);
   return st;
 }
@@ -96,7 +96,7 @@ export function migrate(st) {
   st.goals ||= []; st.wins ||= []; st.days ||= {}; st.weeks ||= {};
   // Saturday targets (step 3) for counters saved before they existed.
   const defCounters = Object.fromEntries(d.counters.map((c) => [c.id, c]));
-  for (const c of st.settings.counters) if (c.saturdayTarget == null) c.saturdayTarget = defCounters[c.id]?.saturdayTarget ?? Math.ceil(c.target / 3);
+  for (const c of st.settings.counters) if (c.per !== 'week' && c.saturdayTarget == null) c.saturdayTarget = defCounters[c.id]?.saturdayTarget ?? Math.ceil(c.target / 3);
   // Goals know their date window.
   for (const g of st.goals) {
     if (g.start) continue;
@@ -125,6 +125,14 @@ export function migrate(st) {
     const today = Object.keys(st.days).filter((k) => st.days[k].started).sort().pop() || new Date().toISOString().slice(0, 10);
     if (!st.goals.some((g) => g.id === 'g_brand' || g.title.startsWith('Personal brand videos'))) st.goals.push(brandGoal(today));
     st.v4 = true;
+  }
+  // v5: fresh volume counters (Chandler, Nov 2026). Old counts stay in history; open days get the new targets.
+  if (!st.v5) {
+    st.settings.counters = d.counters;
+    const ids = new Set(d.counters.map((c) => c.id));
+    for (const g of st.goals) if (g.counterIds) g.counterIds = g.counterIds.filter((i) => ids.has(i));
+    for (const day of Object.values(st.days)) if (day.started && !day.eod) day.targets = targetsFor(st.settings, day.date);
+    st.v5 = true;
   }
   return st;
 }
@@ -161,7 +169,7 @@ function seedSample(st, today) {
       it.done = perfect || (!(it.refId === 'nn_handoff' && i % 3 === 1) && !(it.refId === 'nn_partners' && i % 4 === 2));
       if (it.done && rnd() < 0.6) it.actual = Math.max(3, Math.round(it.minutes * (0.7 + rnd() * 0.7)));
     });
-    s.counters.forEach((c) => { day.counts[c.id] = Math.max(0, Math.round(c.target * (0.6 + rnd() * 0.6))); });
+    s.counters.forEach((c) => { const t = c.per === 'week' ? 1 : c.target; day.counts[c.id] = Math.max(0, Math.round(t * (0.6 + rnd() * 0.6))); });
     day.cash = cash[i % cash.length];
     day.jobs = day.cash >= 2500 ? 2 : day.cash >= 800 ? 1 : 0;
     day.eod = { at: 0, win: winsTxt[i % winsTxt.length], slipped: slips[i % slips.length], tomorrowOne: ones[i % ones.length] };

@@ -1,5 +1,5 @@
 // Offline support. Network first (so updates show up right away), cache as the fallback.
-const CACHE = 'driveway-daily-v2';
+const CACHE = 'driveway-daily-v3';
 const SHELL = [
   './', './index.html', './styles.css', './manifest.webmanifest', './config.js',
   './icon-192.png', './apple-touch-icon.png',
