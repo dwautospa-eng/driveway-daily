@@ -1,9 +1,9 @@
 // Tasks tab: the daily task list (same every weekday, editable right here) + today-only tasks.
-import { html, useState, useEffect } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { dayLabel, weekday } from '../lib/dates.js';
-import { uid, fmtMin, fmtClock } from '../lib/util.js';
+import { html, useState, useEffect } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { dayLabel, weekday } from './dates.js';
+import { uid, fmtMin, fmtClock } from './util.js';
 import { Bar } from './common.js';
 
 export function Tasks({ state, now }) {

@@ -4,7 +4,7 @@
 // - Offline: keeps working from this device and uploads when back online.
 // With no config (config.js empty) the app runs local-only.
 import { useState, useEffect } from './preact.js';
-import { CONFIG } from '../../config.js';
+import { CONFIG } from './config.js';
 
 const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 export const cloudEnabled = !!(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);

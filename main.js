@@ -1,20 +1,20 @@
-import { html, render, useState, useEffect } from './lib/preact.js';
-import { initStore, useAppState, update, getState, replaceFromCloud } from './lib/store.js';
-import { startCloud, useCloud, cloudEnabled } from './lib/cloud.js';
-import { Login } from './ui/login.js';
-import { nowPhoenix, getSim, setSim, shortLabel } from './lib/dates.js';
-import { fmtClock } from './lib/util.js';
-import * as L from './lib/logic.js';
-import { CheckIn } from './ui/checkin.js';
-import { Today } from './ui/today.js';
-import { EndOfDay } from './ui/eod.js';
-import { Cash } from './ui/cash.js';
-import { Wins } from './ui/wins.js';
-import { Settings } from './ui/settings.js';
-import { Goals } from './ui/goals.js';
-import { Celebration } from './ui/celebrate.js';
-import { Sunday } from './ui/sunday.js';
-import { Tasks } from './ui/tasks.js';
+import { html, render, useState, useEffect } from './preact.js';
+import { initStore, useAppState, update, getState, replaceFromCloud } from './store.js';
+import { startCloud, useCloud, cloudEnabled } from './cloud.js';
+import { Login } from './login.js';
+import { nowPhoenix, getSim, setSim, shortLabel } from './dates.js';
+import { fmtClock } from './util.js';
+import * as L from './logic.js';
+import { CheckIn } from './checkin.js';
+import { Today } from './today.js';
+import { EndOfDay } from './eod.js';
+import { Cash } from './cash.js';
+import { Wins } from './wins.js';
+import { Settings } from './settings.js';
+import { Goals } from './goals.js';
+import { Celebration } from './celebrate.js';
+import { Sunday } from './sunday.js';
+import { Tasks } from './tasks.js';
 
 function useNow() {
   const [now, setNow] = useState(nowPhoenix);

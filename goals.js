@@ -1,8 +1,8 @@
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { monthKey, monthName, nextMonth, dateShort, diffDays } from '../lib/dates.js';
-import { uid, money, parseMoney } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { monthKey, monthName, nextMonth, dateShort, diffDays } from './dates.js';
+import { uid, money, parseMoney } from './util.js';
 import { Bar } from './common.js';
 
 const TF = [['week', 'This week'], ['month', 'This month'], ['quarter', 'This quarter'], ['custom', 'Custom date']];

@@ -1,10 +1,10 @@
 // Sunday planning prompt (~15 min). Opens instead of the checklist on Sundays.
 // Reviews Mon–Sat that just ended and builds next week (stored under next Monday's date).
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { addDays, dayLabel, shortLabel, dateShort } from '../lib/dates.js';
-import { money, parseMoney, fmtMin } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { addDays, dayLabel, shortLabel, dateShort } from './dates.js';
+import { money, parseMoney, fmtMin } from './util.js';
 import { Bar, RevenueBlock } from './common.js';
 import { NewGoal } from './goals.js';
 

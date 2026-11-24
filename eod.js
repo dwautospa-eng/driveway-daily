@@ -1,8 +1,8 @@
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { dayLabel } from '../lib/dates.js';
-import { parseMoney } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { dayLabel } from './dates.js';
+import { parseMoney } from './util.js';
 import { RevenueCard } from './common.js';
 
 export function EndOfDay({ state, date, today, blocking }) {

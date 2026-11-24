@@ -1,8 +1,8 @@
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { monthKey, monthName, dateShort } from '../lib/dates.js';
-import { uid, money, parseMoney } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { monthKey, monthName, dateShort } from './dates.js';
+import { uid, money, parseMoney } from './util.js';
 
 // marker = where you "should" be (pace), drawn as a thin tick on the bar
 export function Bar({ value, max, marker }) {

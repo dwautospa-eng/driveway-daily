@@ -1,9 +1,9 @@
 // Today: focus and motivation. The checklist itself lives on the Tasks tab.
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { dayLabel, shortLabel, weekday } from '../lib/dates.js';
-import { fmtMin, money } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { dayLabel, shortLabel, weekday } from './dates.js';
+import { fmtMin, money } from './util.js';
 import { Bar, GoalList } from './common.js';
 
 const GROUPS = [['outreach', 'Outreach'], ['content', 'Content'], ['followups', 'Follow-ups']];

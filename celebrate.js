@@ -1,6 +1,6 @@
-import { html, useEffect, useMemo } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
+import { html, useEffect, useMemo } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
 
 const COLORS = ['#7cc7ff', '#2f6df6', '#1e3a8a', '#ffffff', '#b9d9ff', '#4fd6b0'];
 

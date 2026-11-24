@@ -1,8 +1,8 @@
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { monthKey, monthLabel, prevMonth, nextMonth, shortLabel } from '../lib/dates.js';
-import { money, parseMoney } from '../lib/util.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { monthKey, monthLabel, prevMonth, nextMonth, shortLabel } from './dates.js';
+import { money, parseMoney } from './util.js';
 import { RevenueCard } from './common.js';
 
 export function Cash({ state, now }) {

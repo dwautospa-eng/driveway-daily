@@ -1,7 +1,7 @@
-import { html, useState } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { dayLabel, monthKey, monthName } from '../lib/dates.js';
+import { html, useState } from './preact.js';
+import { update } from './store.js';
+import * as L from './logic.js';
+import { dayLabel, monthKey, monthName } from './dates.js';
 import { RevenueBlock } from './common.js';
 
 export function CheckIn({ state, now }) {

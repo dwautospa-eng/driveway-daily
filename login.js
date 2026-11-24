@@ -1,5 +1,5 @@
-import { html, useState } from '../lib/preact.js';
-import { signIn, signUp } from '../lib/cloud.js';
+import { html, useState } from './preact.js';
+import { signIn, signUp } from './cloud.js';
 
 export function Login() {
   const [mode, setMode] = useState('signin');
@@ -24,7 +24,7 @@ export function Login() {
   };
 
   return html`<div class="login">
-    <div class="login-mark"><img src="icons/icon-192.png" alt="" width="72" height="72" /></div>
+    <div class="login-mark"><img src="icon-192.png" alt="" width="72" height="72" /></div>
     <h1>Driveway Daily</h1>
     <p class="muted">${mode === 'signin' ? 'Sign in to pick up where you left off.' : 'One-time setup: create your account.'}</p>
     <form class="card form" onSubmit=${submit}>

@@ -1,10 +1,10 @@
-import { html, useState } from '../lib/preact.js';
-import { update, replaceState } from '../lib/store.js';
-import * as L from '../lib/logic.js';
-import { defaultState } from '../lib/defaults.js';
-import { getSim, setSim } from '../lib/dates.js';
-import { uid, fmtClock } from '../lib/util.js';
-import { cloudEnabled, useCloud, signOut } from '../lib/cloud.js';
+import { html, useState } from './preact.js';
+import { update, replaceState } from './store.js';
+import * as L from './logic.js';
+import { defaultState } from './defaults.js';
+import { getSim, setSim } from './dates.js';
+import { uid, fmtClock } from './util.js';
+import { cloudEnabled, useCloud, signOut } from './cloud.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

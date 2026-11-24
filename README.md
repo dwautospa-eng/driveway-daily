@@ -14,7 +14,7 @@ Personal accountability dashboard for Driveway Auto Spa. See SPEC.md (in your ho
 ## Run it locally
 No build step. Any static file server works. On this Mac:
 
-    /usr/bin/ruby -run -e httpd . -p 5180
+    /usr/bin/ruby -run -e httpd . -p 5181
 
 Then open http://localhost:5180
 
@@ -23,9 +23,11 @@ Then open http://localhost:5180
 - Sample data loads on first run. Settings → Data → "Remove sample data" clears it.
 
 ## How it's built
-- `src/lib/dates.js`: Phoenix-time day logic (America/Phoenix, no DST)
-- `src/lib/logic.js`: carry-over, scores, streaks, revenue pace, goal progress
-- `src/lib/store.js`: one JSON document, saved in the browser for now (Supabase in step 6)
-- `src/lib/defaults.js`: default settings and sample data
-- `src/ui/*`: screens (check-in, today, end of day, revenue, wins, settings)
-- Preact + htm loaded from unpkg (vendored locally in step 6 for offline PWA)
+Everything sits at the top level (no folders) so it can be uploaded to GitHub straight from the browser.
+- `dates.js`: Phoenix-time day logic (America/Phoenix, no DST)
+- `logic.js`: carry-over, scores, streaks, revenue pace, goals, weekly plan
+- `store.js` + `cloud.js`: one JSON document, saved on the device and synced to Supabase (`config.js`)
+- `defaults.js`: default settings, goals and sample data
+- Screens: `checkin.js`, `today.js`, `tasks.js`, `eod.js`, `cash.js`, `goals.js`, `sunday.js`, `wins.js`, `settings.js`, `login.js`
+- `sw.js` + `manifest.webmanifest` + `icon-*.png`: installable, works offline
+- Preact + htm loaded from unpkg (cached by the service worker)

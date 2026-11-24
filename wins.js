@@ -1,6 +1,6 @@
-import { html } from '../lib/preact.js';
-import { update } from '../lib/store.js';
-import { dateShort } from '../lib/dates.js';
+import { html } from './preact.js';
+import { update } from './store.js';
+import { dateShort } from './dates.js';
 import { AddWin } from './common.js';
 
 export function Wins({ state, now }) {
