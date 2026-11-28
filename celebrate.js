@@ -2,7 +2,7 @@ import { html, useEffect, useMemo } from './preact.js';
 import { update } from './store.js';
 import * as L from './logic.js';
 
-const COLORS = ['#7cc7ff', '#2f6df6', '#1e3a8a', '#ffffff', '#b9d9ff', '#4fd6b0'];
+const COLORS = ['#e3c38f', '#f5e2bd', '#b8915a', '#ffffff', '#c9467f', '#3aa3b8'];
 
 export function Celebration({ goal, state }) {
   const pieces = useMemo(() => Array.from({ length: 70 }, (_, i) => ({

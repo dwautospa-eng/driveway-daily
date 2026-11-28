@@ -1,5 +1,5 @@
 // Offline support. Network first (so updates show up right away), cache as the fallback.
-const CACHE = 'driveway-daily-v4';
+const CACHE = 'driveway-daily-v5';
 const SHELL = [
   './', './index.html', './styles.css', './manifest.webmanifest', './config.js',
   './icon-192.png', './apple-touch-icon.png',
@@ -10,7 +10,7 @@ const SHELL = [
   './cash.js', './wins.js', './settings.js', './goals.js', './celebrate.js',
   './sunday.js', './login.js', './home.js', './calendar.js', './overview.js', './sales.js',
 ];
-const CDN = ['unpkg.com', 'cdn.jsdelivr.net'];
+const CDN = ['unpkg.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
