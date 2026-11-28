@@ -120,3 +120,10 @@ export async function signOut() {
   if (dirty) await pushNow();
   await client.auth.signOut();
 }
+
+// For our own API (calendar): the signed-in session's token.
+export async function accessToken() {
+  if (!client) return null;
+  const { data } = await client.auth.getSession();
+  return data.session?.access_token || null;
+}

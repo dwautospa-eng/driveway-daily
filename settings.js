@@ -20,6 +20,10 @@ export function Settings({ state, now }) {
     <header class="top"><div><div class="eyebrow">Driveway Daily</div><h1>Settings</h1></div></header>
 
     <section class="card form">
+      <label>Your name (for the Home greeting)<input value=${s.name || ''} placeholder="Chandler" onInput=${(e) => set((x) => { x.name = e.target.value; })} /></label>
+    </section>
+
+    <section class="card form">
       <h2>Why I'm doing this</h2>
       <textarea rows="5" value=${s.why} placeholder="In your own words. Who are you doing this for? What does winning look like?"
         onInput=${(e) => set((x) => { x.why = e.target.value; })} />

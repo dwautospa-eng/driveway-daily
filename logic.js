@@ -398,3 +398,49 @@ export function avgActual(state, refId, before) {
     .filter((v) => v > 0).slice(0, 10);
   return vals.length >= 2 ? { avg: Math.round(sum(vals) / vals.length), n: vals.length } : null;
 }
+
+// ---------- Sales (logged as they're sold; paid + review tracked per sale) ----------
+export const saleTotal = (s) => sum((s.lines || []).map((l) => l.amount));
+export const salesIn = (state, month) => (state.sales || []).filter((s) => s.date.startsWith(month));
+export const monthMarketing = (state, month) => state.marketing?.[month] || { spend: [], leads: 0 };
+export function ensureMarketing(state, month) {
+  state.marketing ||= {};
+  return (state.marketing[month] ||= { spend: [], leads: 0 });
+}
+export function salesStats(state, month) {
+  const list = salesIn(state, month);
+  const sold = sum(list.map(saleTotal)), n = list.length;
+  const mk = monthMarketing(state, month);
+  const spend = sum(mk.spend.map((x) => x.amount)), leads = mk.leads || 0;
+  const byService = {};
+  for (const s of list) for (const l of s.lines || []) {
+    const k = (l.service || 'Other').trim() || 'Other';
+    (byService[k] ||= { amount: 0, n: 0 }).amount += l.amount || 0;
+    byService[k].n++;
+  }
+  return {
+    list, sold, n, spend, leads, byService,
+    avgTicket: n ? sold / n : null,
+    roas: spend ? sold / spend : null,
+    conversion: leads ? n / leads : null,
+    costPerSale: n && spend ? spend / n : null,
+  };
+}
+export const unpaidSales = (state) => (state.sales || []).filter((s) => !s.paid).sort((a, b) => (a.date < b.date ? -1 : 1));
+export const reviewsToAsk = (state) => (state.sales || []).filter((s) => s.paid && !s.reviewAsked).sort((a, b) => (a.date < b.date ? -1 : 1));
+export const knownServices = (state) => [...new Set([...(state.settings.services || []), ...(state.sales || []).flatMap((s) => (s.lines || []).map((l) => l.service))].filter(Boolean))];
+
+// Content made this month: content counters except scripting.
+export function contentMade(state, month) {
+  const ids = state.settings.counters.filter((c) => c.group === 'content' && c.id !== 'c_scripted');
+  const parts = ids.map((c) => ({ label: c.label, n: sum(Object.values(state.days).filter((d) => d.date.startsWith(month)).map((d) => d.counts?.[c.id] || 0)) }));
+  return { total: sum(parts.map((p) => p.n)), parts };
+}
+
+// Open to-dos for a day: daily tasks + today-only tasks not done or dropped.
+export function openTodos(day) {
+  if (!day) return [];
+  return [...(day.items || []).filter((i) => !i.done).map((i) => ({ key: i.refId, title: i.title })),
+    ...(day.tasks || []).filter((t) => !t.done && !t.dropped && !t.carriedTo).map((t) => ({ key: t.id, title: t.title, top: t.topOne }))]
+    .sort((a, b) => (b.top ? 1 : 0) - (a.top ? 1 : 0));
+}

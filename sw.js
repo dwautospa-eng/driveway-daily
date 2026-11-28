@@ -1,5 +1,5 @@
 // Offline support. Network first (so updates show up right away), cache as the fallback.
-const CACHE = 'driveway-daily-v3';
+const CACHE = 'driveway-daily-v4';
 const SHELL = [
   './', './index.html', './styles.css', './manifest.webmanifest', './config.js',
   './icon-192.png', './apple-touch-icon.png',
@@ -8,7 +8,7 @@ const SHELL = [
   './defaults.js', './store.js', './cloud.js',
   './common.js', './checkin.js', './today.js', './tasks.js', './eod.js',
   './cash.js', './wins.js', './settings.js', './goals.js', './celebrate.js',
-  './sunday.js', './login.js',
+  './sunday.js', './login.js', './home.js', './calendar.js', './overview.js', './sales.js',
 ];
 const CDN = ['unpkg.com', 'cdn.jsdelivr.net'];
 
@@ -29,6 +29,7 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   const ours = url.origin === self.location.origin;
   if (!ours && !CDN.includes(url.hostname)) return; // never touch Supabase / API calls
+  if (ours && url.pathname.startsWith('/api/')) return; // calendar is always live
   e.respondWith(
     fetch(req)
       .then((res) => {

@@ -4,7 +4,9 @@ import { uid } from './util.js';
 
 export function defaultSettings() {
   return {
+    name: 'Chandler',
     why: '',
+    services: ['PPF', 'Ceramic coating', 'Window tint', 'Paint correction', 'Detail'],
     principles: [
       'Volume negates luck.',
       "More beats better. Better beats new. Do more of what's already working.",
@@ -64,7 +66,7 @@ export function defaultSettings() {
 }
 
 export function defaultState(today, withSample) {
-  const st = { version: 5, settings: defaultSettings(), goals: defaultGoals(today), wins: [], days: {}, weeks: {}, v3: true, v4: true, v5: true };
+  const st = { version: 5, settings: defaultSettings(), goals: defaultGoals(today), wins: [], days: {}, weeks: {}, sales: [], marketing: {}, v3: true, v4: true, v5: true };
   if (withSample) seedSample(st, today);
   return st;
 }
@@ -93,7 +95,7 @@ const videosGoal = (today) => ({
 export function migrate(st) {
   const d = defaultSettings();
   st.settings = { ...d, ...st.settings };
-  st.goals ||= []; st.wins ||= []; st.days ||= {}; st.weeks ||= {};
+  st.goals ||= []; st.wins ||= []; st.days ||= {}; st.weeks ||= {}; st.sales ||= []; st.marketing ||= {};
   // Saturday targets (step 3) for counters saved before they existed.
   const defCounters = Object.fromEntries(d.counters.map((c) => [c.id, c]));
   for (const c of st.settings.counters) if (c.per !== 'week' && c.saturdayTarget == null) c.saturdayTarget = defCounters[c.id]?.saturdayTarget ?? Math.ceil(c.target / 3);
